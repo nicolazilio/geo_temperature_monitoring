@@ -2,7 +2,7 @@ import os
 from os.path import dirname
 from django.utils.translation import ugettext_lazy as _
 from .private_settings import (SECRET_KEY, DB_NAME, DB_USER, DB_PASSWORD, 
-EMAIL_HOST, EMAIL_HOST_USER, DEFAULT_FROM_EMAIL, EMAIL_HOST_PASSWORD)
+EMAIL_HOST, EMAIL_HOST_USER, DEFAULT_FROM_EMAIL, EMAIL_HOST_PASSWORD, EMAIL_PORT)
 
 BASE_DIR = dirname(dirname(dirname(dirname(os.path.abspath(__file__)))))
 CONTENT_DIR = os.path.join(BASE_DIR, 'content')
