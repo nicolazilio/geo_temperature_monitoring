@@ -15,3 +15,5 @@ soupsieve==2.0
 sqlparse==0.3.1
 typed-ast==1.4.1
 wrapt==1.11.2
+mysqlclient==1.4.6
+uWSGI==2.0.18
