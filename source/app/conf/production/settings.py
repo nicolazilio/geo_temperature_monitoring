@@ -1,11 +1,11 @@
 import os
 from os.path import dirname
 from django.utils.translation import ugettext_lazy as _
+from .private_settings import (SECRET_KEY, DB_NAME, DB_USER, DB_PASSWORD, 
+EMAIL_HOST, EMAIL_HOST_USER, DEFAULT_FROM_EMAIL, EMAIL_HOST_PASSWORD)
 
 BASE_DIR = dirname(dirname(dirname(dirname(os.path.abspath(__file__)))))
 CONTENT_DIR = os.path.join(BASE_DIR, 'content')
-
-SECRET_KEY = '3d305kajG5Jy8KBafCMpHwDIsNi0SqVaW'
 
 DEBUG = False
 ALLOWED_HOSTS = [
@@ -24,10 +24,12 @@ INSTALLED_APPS = [
 
     # Vendor apps
     'bootstrap4',
+    'django_tables2',
 
     # Application apps
     'main',
     'accounts',
+    'temp_monitor'
 ]
 
 MIDDLEWARE = [
@@ -65,18 +67,19 @@ WSGI_APPLICATION = 'app.wsgi.application'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-EMAIL_HOST = ''
-EMAIL_HOST_USER = ''
-DEFAULT_FROM_EMAIL = ''
-EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 465
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'default': {
+        'ENGINE': 'django.db.backends.mysql', 
+        'NAME': DB_NAME, 
+        'USER': DB_USER, 
+        'PASSWORD': DB_PASSWORD,
+        'HOST': 'localhost', 
+        'PORT': '3306',
+        'OPTIONS': {'charset': 'utf8mb4'},
     }
 }
 
@@ -134,6 +137,6 @@ LOCALE_PATHS = [
     os.path.join(CONTENT_DIR, 'locale')
 ]
 
-SIGN_UP_FIELDS = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
+SIGN_UP_FIELDS = ['username', 'first_name', 'last_name', 'temp_unit', 'email', 'password1', 'password2', 'latitude', 'longitude']
 if DISABLE_USERNAME:
     SIGN_UP_FIELDS = ['first_name', 'last_name', 'email', 'password1', 'password2']

@@ -4,7 +4,7 @@
 {% load i18n %}
 
 {% block content %}
-
+    <h1>Test project for body temperature monitoring</h1>
     <h4>{% trans 'Log in' %}</h4>
 
     <form method="post">
@@ -19,6 +19,9 @@
     <hr>
 
     <ul>
+        <li>
+            <a href="{% url 'accounts:sign_up' %}">{% trans 'Create an account' %}</a>
+        </li>
         <li>
             <a href="{% url 'accounts:restore_password' %}">{% trans 'Forgot your password?' %}</a>
         </li>

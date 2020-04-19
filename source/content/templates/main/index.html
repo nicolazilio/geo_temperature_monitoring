@@ -6,7 +6,8 @@
 
     {% if request.user.is_authenticated %}
 
-        {% trans 'Your username is' %} <b>{{ request.user.username }}</b>.
+        {% trans 'Welcome' %} <b>{%if request.user.first_name %}{{request.user.first_name}}{% else %}{{ request.user.username }}{% endif %}</b>,
+        {% trans 'your data are show below' %}
 
     {% else %}
 

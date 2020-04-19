@@ -9,6 +9,7 @@ from django.utils import timezone
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 
+from .models import ExtraInfo, TEMP_UNIT_CHOICES
 
 class UserCacheMixin:
     user_cache = None
@@ -113,6 +114,9 @@ class SignUpForm(UserCreationForm):
         fields = settings.SIGN_UP_FIELDS
 
     email = forms.EmailField(label=_('Email'), help_text=_('Required. Enter an existing email address.'))
+    latitude = forms.DecimalField (label=_('Latitude'), widget = forms.HiddenInput())
+    longitude = forms.DecimalField (label=_('Longitude'), widget = forms.HiddenInput())
+    temp_unit = forms.ChoiceField(label=_('Temperature unit'), choices=TEMP_UNIT_CHOICES, widget=forms.RadioSelect)
 
     def clean_email(self):
         email = self.cleaned_data['email']
@@ -122,7 +126,6 @@ class SignUpForm(UserCreationForm):
             raise ValidationError(_('You can not use this email address.'))
 
         return email
-
 
 class ResendActivationCodeForm(UserCacheMixin, forms.Form):
     email_or_username = forms.CharField(label=_('Email or Username'))

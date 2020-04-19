@@ -18,6 +18,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.generic import View, FormView
 from django.conf import settings
+from django.core.validators import validate_ipv46_address
 
 from .utils import (
     send_activation_email, send_reset_password_email, send_forgotten_username_email, send_activation_change_email,
@@ -28,7 +29,7 @@ from .forms import (
     ResendActivationCodeForm, ResendActivationCodeViaEmailForm, ChangeProfileForm, ChangeEmailForm,
 )
 from .models import Activation
-
+from.models import ExtraInfo
 
 class GuestOnlyView(View):
     def dispatch(self, request, *args, **kwargs):
@@ -89,6 +90,19 @@ class SignUpView(GuestOnlyView, FormView):
     template_name = 'accounts/sign_up.html'
     form_class = SignUpForm
 
+    def get_ip_address(self, request):
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        
+        try:
+            validate_ipv46_address(ip)
+            return ip
+        except:
+            return None
+
     def form_valid(self, form):
         request = self.request
         user = form.save(commit=False)
@@ -104,6 +118,15 @@ class SignUpView(GuestOnlyView, FormView):
 
         # Create a user record
         user.save()
+
+        lat = form.cleaned_data['latitude']
+        lon = form.cleaned_data['longitude']
+
+        ExtraInfo.objects.create(user=user,
+                                 ip_address = self.get_ip_address(request),
+                                 latitude = lat if lat else None,
+                                 longitude = lon if lon else None,
+                                )
 
         # Change the username to the "user_ID" form
         if settings.DISABLE_USERNAME:

@@ -5,6 +5,11 @@
 
 {% block content %}
 
+    <div class="alert alert-warning" role="alert">
+    The purpose of this project is to  analyze body temperature trends geographically, therefore we need to know
+    your location. Please allow us to get your location when you get the relevant notification (or click <a href="javascript:undefined" onclick=getLocation()>here</a>).
+  </div>
+
     <h4>{% trans 'Create an account' %}</h4>
 
     <form method="post">
@@ -12,8 +17,27 @@
         {% csrf_token %}
         {% bootstrap_form form %}
 
-        <button class="btn btn-success">{% trans 'Create' %}</button>
+        <button class="btn btn-success">{% trans 'Create account' %}</button>
+
+        <br><br>
 
     </form>
+
+<script>
+    $(document).ready(setTimeout(getLocation(), 2000));
+
+    function getLocation(position) {
+    if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            alert("Sorry, geolocation is not supported by this browser.");
+        }
+    }
+
+    function showPosition(position) {
+        $('#id_latitude').val(position.coords.latitude);
+        $('#id_longitude').val(position.coords.longitude);
+    }
+</script>
 
 {% endblock %}

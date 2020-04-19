@@ -1,0 +1,37 @@
+{% extends 'layouts/default/page.html' %}
+
+{% load bootstrap4 %}
+{% load i18n %}
+
+{% block content %}
+
+    <h4>{% trans 'Add temperature measurement' %}</h4>
+
+    <form method="post">
+
+        {% csrf_token %}
+        {% bootstrap_form form %}
+
+        <button class="btn btn-success">{% trans 'Add' %}</button>
+
+        <br><br>
+
+    </form>
+
+    <script>
+        $(document).ready(setTimeout(getLocation(), 2000));
+    
+        function getLocation(position) {
+        if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                alert("Sorry, geolocation is not supported by this browser.");
+            }
+        }
+    
+        function showPosition(position) {
+            $('#id_latitude').val(position.coords.latitude);
+            $('#id_longitude').val(position.coords.longitude);
+        }
+    </script>
+{% endblock %}

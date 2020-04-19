@@ -2,13 +2,12 @@ import os
 import warnings
 from django.utils.translation import ugettext_lazy as _
 from os.path import dirname
+from .private_settings import SECRET_KEY
 
 warnings.simplefilter('error', DeprecationWarning)
 
 BASE_DIR = dirname(dirname(dirname(dirname(os.path.abspath(__file__)))))
 CONTENT_DIR = os.path.join(BASE_DIR, 'content')
-
-SECRET_KEY = 'NhfTvayqggTBPswCXXhWaN69HuglgZIkM'
 
 DEBUG = True
 ALLOWED_HOSTS = []
@@ -26,10 +25,12 @@ INSTALLED_APPS = [
 
     # Vendor apps
     'bootstrap4',
+    'django_tables2',
 
     # Application apps
     'main',
     'accounts',
+    'temp_monitor'
 ]
 
 MIDDLEWARE = [
@@ -92,7 +93,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-ENABLE_USER_ACTIVATION = True
+ENABLE_USER_ACTIVATION = False
 DISABLE_USERNAME = False
 LOGIN_VIA_EMAIL = True
 LOGIN_VIA_EMAIL_OR_USERNAME = False
@@ -103,7 +104,7 @@ USE_REMEMBER_ME = True
 RESTORE_PASSWORD_VIA_EMAIL_OR_USERNAME = False
 ENABLE_ACTIVATION_AFTER_EMAIL_CHANGE = True
 
-SIGN_UP_FIELDS = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
+SIGN_UP_FIELDS = ['username', 'first_name', 'last_name', 'temp_unit', 'email', 'password1', 'password2', 'latitude', 'longitude']
 if DISABLE_USERNAME:
     SIGN_UP_FIELDS = ['first_name', 'last_name', 'email', 'password1', 'password2']
 
